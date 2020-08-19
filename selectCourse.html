@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Attendance System</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Abel|Satisfy' rel='stylesheet' type='text/css' />
+    <link href="selectCourse.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="icon" href="images/gplogo.png" type="image/png" sizes="5x10">
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="header-wrapper">
+            <div id="header" class="container">
+                <div id="logo">
+                    <h1><a><img src="images/CCIS_Logo.png" width="80" height="107"></a></h1>
+                </div>
+                <div id="logo2">
+                    <h1><a><img src="images/gplogo.png" width="100" height="107"></a></h1>
+                </div>
+                <div id="menu">
+                    <ul>
+                        <li class="current_page_item"><a id="homepageBut" href="homepage.html">Homepage</a></li>
+                        <li><a class="signOutBut" style="margin-top:-50px;" onclick="signOut()">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- end #header -->
+        <!-- passLost -->
+        
+        <div class="passLost">
+            <div class="passLost-screen">
+                <div class="app-title">
+                    <!--
+                    <h4>Select a course to open attendance sheet
+                    </h4>
+-->
+                </div>
+                <form method="post" action="http://www.google.com">
+                    <div class="passLost-form">
+                        <div class="control-group">
+
+                            
+
+                            <select name="Courses" onclick="retrieveSection()" id="courses">
+                                <option>Course</option>
+                             
+                            </select>
+                            <br>
+                            <select id="sections" onclick="retrieveDates()">
+                                <option>Section</option>
+
+                            </select><br>
+
+                            <select id="attendanceDates" onclick="alertDatesSelect()">
+                                <option>Date</option>
+
+
+                            </select><br>
+
+                            <label class="passLost-field-icon fui-user" for="passLost-name"></label>
+                        </div>
+                        <a id="submit" onclick="enableSubmit()" class="btn btn-primary btn-large btn-block" href="attendanceSheet.html">Submit</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+
+
+
+        <!-- end #page -->
+
+    </div>
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+    <script>
+        var config = {
+            apiKey: "AIzaSyAt041WVPLqq9vZTJfDKRSFWg1I0qDvzM8",
+            authDomain: "mlkit-ocv.firebaseapp.com",
+            databaseURL: "https://mlkit-ocv.firebaseio.com/",
+            storageBucket: "mlkit-ocv.appspot.com"
+        };
+        firebase.initializeApp(config);
+
+    </script>
+    <script src="indexSelectCourse.js"></script>
+</body>
+
+</html>

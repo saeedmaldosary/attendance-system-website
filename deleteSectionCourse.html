@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Attendance System</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Abel|Satisfy' rel='stylesheet' type='text/css' />
+    <link href="deleteSectionCourse.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="icon" href="images/gplogo.png" type="image/png" sizes="5x10">
+
+
+    <script src="index.js"></script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="header-wrapper">
+            <div id="header" class="container">
+                <div id="logo">
+                    <h1><a><img src="images/CCIS_Logo.png" width="80" height="107"></a></h1>
+                </div>
+                <div id="logo2">
+                    <h1><a><img src="images/gplogo.png" width="100" height="107"></a></h1>
+                </div>
+                <div id="menu">
+                    <ul>
+                        <li class="current_page_item"><a href="homepage.html">Homepage</a></li>
+                        <li><a class="signOutBut" style="margin-top:-50px;" onclick="signOut()">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- end #header -->
+        <!-- passLost -->
+        <div class="passLost">
+            <div class="passLost-screen">
+               
+                <div class="passLost-form">
+                 
+                    <div class="CoursesAndSection">
+                        <select name="Courses" id="courses" onclick="retreiveSections()">
+                             <option>Course</option>
+                            <option value="IS395">IS395</option>
+                            <option value="IS391">IS391</option>
+                            <option value="IS203">IS203</option>
+                            <option value="IS441">IS441</option>
+                        </select>
+                        <br>
+                         <select name="sectionSelect" id="sectionSelect">
+                             <option>Section</option>
+                           
+                        </select>
+                        <br>
+                     
+                    </div>
+
+                  
+
+                    <div class="submitBut">
+                        <button id="deleteSection" onclick="deleteSection()" class="btn btn-primary btn-large btn-block">Delete Section</button>
+                        <br>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <!-- end #page -->
+
+    </div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+    <script>
+        var config = {
+            apiKey: "AIzaSyAt041WVPLqq9vZTJfDKRSFWg1I0qDvzM8",
+            authDomain: "mlkit-ocv.firebaseapp.com",
+            databaseURL: "https://mlkit-ocv.firebaseio.com/",
+            storageBucket: "mlkit-ocv.appspot.com"
+        };
+        firebase.initializeApp(config);
+        var secondaryApp = firebase.initializeApp(config, "Secondary");
+
+    </script>
+    <script src="indexDeleteSectionCourse.js"></script>
+</body>
+
+</html>
