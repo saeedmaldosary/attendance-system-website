@@ -194,16 +194,32 @@ table th {
     font-size: 13px;
 }
 
-.demo table th {
+.demo table #atdTitle {
     height: 20px;
     padding: 8px 0;
     text-align: center;
     background: #ECF0F1;
     font-size: 16px;
     text-indent: 8px;
+    font-weight: bolder;
     border: 1px solid #ddd;
     border-top: none;
     border-bottom-width: 2px;
+    color: green;
+}
+
+.demo table #absTitle {
+    height: 20px;
+    padding: 8px 0;
+    text-align: center;
+    background: #ECF0F1;
+    font-size: 16px;
+    text-indent: 8px;
+    font-weight: bolder;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-bottom-width: 2px;
+    color: rgb(233, 19, 19);
 }
 
 .demo table td {
@@ -256,6 +272,7 @@ select {
 
 
 #editBut2 {
+    
     margin-top: 25px;
     margin-bottom: 0px;
 }

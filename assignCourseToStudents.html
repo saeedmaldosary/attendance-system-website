@@ -41,17 +41,17 @@
                 <div class="passLost-form">
 
                     <div class="CoursesAndSection">
-                    <select name="Courses" id="courses">
-                        <option>Course</option>
-                        <option value="IS395">IS395</option>
-                        <option value="IS391">IS391</option>
-                        <option value="IS203">IS203</option>
-                        <option value="IS441">IS441</option>
-                    </select>
-                    <br>
-                    <input class="inputTag" type="text" id="sectionNumber" placeholder="Section number">
-                    <br>
-                        </div>
+                        <select name="Courses" id="courses">
+                            <option>Course</option>
+                            <option value="IS395">IS395</option>
+                            <option value="IS391">IS391</option>
+                            <option value="IS203">IS203</option>
+                            <option value="IS441">IS441</option>
+                        </select>
+                        <br>
+                        <input class="inputTag" type="text" id="sectionNumber" placeholder="Section number">
+                        <br>
+                    </div>
                     <div class="multipleSelection">
                         <div class="selectBox" onclick="showCheckboxes()">
                             <select>
@@ -66,7 +66,8 @@
                     </div>
                     <br>
                     <div class="submitBut">
-                        <button id="assignStudent" onclick="uploadStudentsCourseInfo()" class="btn btn-primary btn-large btn-block">Assign Student</button>
+                        <button id="assignStudent" onclick="uploadStudentsCourseInfo()"
+                            class="btn btn-primary btn-large btn-block">Assign Student</button>
                         <br>
 
                     </div>
@@ -93,7 +94,6 @@
         };
         firebase.initializeApp(config);
         var secondaryApp = firebase.initializeApp(config, "Secondary");
-
     </script>
     <script src="indexAssignCourseToStudents.js"></script>
 </body>

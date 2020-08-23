@@ -12,7 +12,7 @@
                      alert("You are not allowed to enter this page!");
                      window.location.replace("homepageStudentTeacher.html");
                  }
-             } 
+             }
          });
      } else {
          //User not signed in redirect to login page!
@@ -62,6 +62,7 @@
          alert("Please select a course");
      } else {
 
+
          var f25 = firebase.database().ref("coursesInfo").child(selectedCourse).child(sectionNo);
 
          f25.on("value", function (snapshot) {
@@ -88,9 +89,7 @@
 
      if (sectionNo === "Section" && selectedCourse === "Course") {
          alert("Please select a course and section");
-     }
-     
-      else if (sectionNo === "Section") {
+     } else if (sectionNo === "Section") {
          alert("Please select a section");
      }
 
@@ -108,9 +107,6 @@
      var sectionNo = s.options[s.selectedIndex].text;
 
 
-     var sectionNo = document.getElementById("sectionNumber").value;
-
-     var array = [];
      var checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
 
 
@@ -119,39 +115,71 @@
 
      } else {
 
-         var counter = 0;
+
+         var arrayCS = [];
          var f4 = firebase.database().ref("coursesInfo").child(selectedCourse).child(sectionNo);
          f4.once("value")
              .then(function (snapshot) {
-                 counter = snapshot.numChildren();
 
-
-
-                 for (var i = 0; i < checkboxes.length; i++) {
-
-
-                     var state = "true";
-                     for (var j = 0; j < 100; j++) {
-                         if (snapshot.child("StudentName" + j).val() !== checkboxes[i].value) {
-                             state = "true";
-                         } else {
-                             state = "false";
-                             break;
+                 for (var i = 0; i < snapshot.numChildren() + 1; i++) {
+                     var sum = i + 1;
+                     for (var j = 0; j < checkboxes.length; j++) {
+                         if (snapshot.child("StudentName" + sum).val() !== checkboxes[j].value) {
+                             arrayCS.push(snapshot.child("StudentName" + sum).val());
                          }
                      }
-                     var sum;
-                     if (state === "true") {
-                         alert(checkboxes[i].value + " not exist in this section or course!");
-                     } else {
-                         firebase.database().ref("coursesInfo").child(selectedCourse).child(sectionNo).child("StudentName" + j).remove();
-                         alert(checkboxes[i].value + " delete done.");
-                     }
-
-
                  }
+
+                 for (var i = 0; i < arrayCS.length; i++) {
+                     var sum55 = i + 1;
+                     firebase.database().ref("coursesInfo").child(selectedCourse).child(sectionNo).child("StudentName" + sum55).set(arrayCS[i]);
+                 }
+
+                 for (var i = arrayCS.length; i <= snapshot.numChildren(); i++) {
+                     firebase.database().ref("coursesInfo").child(selectedCourse).child(sectionNo).child("StudentName" + i).set(null);
+                 }
+
+
+
+                 alert("Students deleted done");
+                 document.getElementById("checkboxesStudentNames").innerHTML = "";
+                 var f25 = firebase.database().ref("coursesInfo").child(selectedCourse).child(sectionNo);
+
+                 f25.on("value", function (snapshot) {
+                     snapshot.forEach(function (childSnapshot) {
+                         if (childSnapshot.key !== "courseTeacher") {
+                             document.getElementById("checkboxesStudentNames").innerHTML += "<label><input type='checkbox' name='vechicle' value='" + childSnapshot.val() + "'>" + childSnapshot.val() + "</label>";
+                         }
+                     }); // For loop in database and find section
+                 }) // For start retreive
+
+
+                 var select = document.getElementById("sectionSelect");
+                 var length = select.options.length;
+                 for (i = length - 1; i > 0; i--) {
+                     select.options[i] = null;
+                 }
+                 var f26 = firebase.database().ref("coursesInfo").child(selectedCourse);
+
+                 f26.on("value", function (snapshot) {
+                     snapshot.forEach(function (childSnapshot) {
+                         document.getElementById("sectionSelect").innerHTML += "<option>" + childSnapshot.key + "</option>";
+                     }); // For loop in database and find section
+                 }) // For start retreive
+
+                 document.getElementById("sectionSelect").value = sectionNo;
+
+
+
              });
+
+
+
+
      }
  }
+
+
 
 
 

@@ -12,7 +12,7 @@
                      alert("You are not allowed to enter this page!");
                      window.location.replace("homepageStudentTeacher.html");
                  }
-             } 
+             }
 
          });
      } else {
@@ -23,7 +23,6 @@
      }
 
  });
-
 
 
 
@@ -49,7 +48,6 @@
 
      var sectionNo = document.getElementById("sectionNumber").value;
 
-     var array = [];
      var checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
 
      if (selectedCourse === "Course" || sectionNo == null || sectionNo == "" || checkboxes.length < 1) {
@@ -57,22 +55,14 @@
 
      } else {
 
-         var counter = 0;
          var f4 = firebase.database().ref("coursesInfo").child(selectedCourse).child(sectionNo);
          f4.once("value")
              .then(function (snapshot) {
-                 counter = snapshot.numChildren();
-
-
-
+                 var counter1 = snapshot.numChildren();
+                 var counter2 = 0;
                  for (var i = 0; i < checkboxes.length; i++) {
-
-                     //we can use random child to let the studentname same in all database
-                     //see 10:10
-                     //https://www.youtube.com/watch?v=KITvtG0ZFb8
-
                      var state = "true";
-                     for (var j = 0; j < 100; j++) {
+                     for (var j = 0; j < snapshot.numChildren() + 1; j++) {
                          if (snapshot.child("StudentName" + j).val() !== checkboxes[i].value) {
                              state = "true";
                          } else {
@@ -80,25 +70,47 @@
                              break;
                          }
                      }
-                     var sum;
                      if (state === "true") {
-                         if (snapshot.hasChild("courseTeacher")) {
-                             sum = i + counter + 5;
-                         } else {
-                             sum = i + counter;
-                         }
+                         counter2++;
+                         var sum = counter1 + counter2;
                          firebase.database().ref("coursesInfo").child(selectedCourse).child(sectionNo).child("StudentName" + sum).set(checkboxes[i].value);
-                         //alert("Students assigned done!");
                      } else {
                          alert(checkboxes[i].value + " assigned before!")
                      }
-
-
+                 }
+                 if (counter2 > 0) {
+                    alert("Students assigned done!");
                  }
              });
 
      }
  }
+
+ function removeDub() {
+
+     var c = document.getElementById("courses");
+     var selectedCourse = c.options[c.selectedIndex].text;
+
+     var sectionNo = document.getElementById("sectionNumber").value;
+
+     var checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
+
+     var f4 = firebase.database().ref("coursesInfo").child(selectedCourse).child(sectionNo);
+     f4.on("value", function (snapshot) {
+         snapshot.forEach(function (childSnapshot) {
+
+             for (var i = 0; i < checkboxes.length; i++) {
+
+                 if (childSnapshot.val() === checkboxes[i].value) {
+                     alert(childSnapshot.val() + " Dub!");
+                     firebase.database().ref("coursesInfo").child(selectedCourse).child(sectionNo).child(childSnapshot.key).set(null);
+                 }
+             }
+
+         });
+     })
+ }
+
 
 
 
