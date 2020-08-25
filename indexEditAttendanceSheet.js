@@ -14,7 +14,7 @@
 
                      window.location.replace("homepageStudentTeacher.html");
                  }
-             } 
+             }
 
          });
      } else {
@@ -26,7 +26,7 @@
 
  });
 
-if (localStorage.getItem("userType2") === 'Teacher') {
+ if (localStorage.getItem("userType2") === 'Teacher') {
      document.getElementById("homepageBut").setAttribute("href", "homepageStudentTeacher.html");
  }
 
@@ -57,21 +57,23 @@ if (localStorage.getItem("userType2") === 'Teacher') {
      document.getElementById("tableAbsent").innerHTML += "<tr onclick = 'makeAttendee(this)'><td>" + studentName + "</td></tr>";
      absentStudents.push(studentName);
 
+     for (var i = 0; i < attendeeStudents.length; i++) {
+
+        firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(localStorage.getItem("selectedDate")).child("namesList").child(i).set(null);
+
+    }
+
      remove(attendeeStudents, studentName);
 
 
-      for (var i = 0; i < 100; i++) {
-
-         firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(localStorage.getItem("selectedDate")).child("namesList").child(i).set(null);
-
-     }
+    
 
      for (var i = 0; i < attendeeStudents.length; i++) {
 
          firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(localStorage.getItem("selectedDate")).child("namesList").child(i).set(attendeeStudents[i]);
 
      }
-     
+
 
 
 
@@ -88,14 +90,15 @@ if (localStorage.getItem("userType2") === 'Teacher') {
      document.getElementById("tableAbsent").deleteRow(i);
 
      document.getElementById("tableAttendee").innerHTML += "<tr onclick = 'makeAbsent(this)'><td>" + studentName + "</td></tr>";
+     for (var i = 0; i < attendeeStudents.length; i++) {
+
+        firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(localStorage.getItem("selectedDate")).child("namesList").child(i).set(null);
+
+    }
+
      attendeeStudents.push(studentName);
      remove(absentStudents, studentName);
 
-     for (var i = 0; i < 100; i++) {
-
-         firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(localStorage.getItem("selectedDate")).child("namesList").child(i).set(null);
-
-     }
 
      for (var i = 0; i < attendeeStudents.length; i++) {
 

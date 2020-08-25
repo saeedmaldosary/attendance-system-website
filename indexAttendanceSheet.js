@@ -2,7 +2,7 @@
 
      if (user) {
          // User is signed in.
-        
+
      } else {
          //User not signed in redirect to login page!
          uid = null;
@@ -42,17 +42,19 @@
  })
 
  // Absent Students
- for (var j = 0; j < 500; j++) {
-     var f3 = firebase.database().ref("coursesInfo").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child("StudentName" + j);
+ var f12 = firebase.database().ref("coursesInfo").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection"));
 
-     f3.once("value").then(function (snapshot) {
-         if (snapshot.val() !== null && !arrayAtt.includes(snapshot.val())) {
-             document.getElementById("tableAbsent").innerHTML += "<tr><td>" + snapshot.val() + "</td></tr>";
-             arrayAbs.push(snapshot.val());
+ f12.on("value", function (snapshot) {
+     snapshot.forEach(function (childSnapshot) {
+
+    var studentName = childSnapshot.val();
+         if (studentName !== null && !arrayAtt.includes(studentName) && childSnapshot.key !== "courseTeacher") {
+             document.getElementById("tableAbsent").innerHTML += "<tr><td>" + studentName + "</td></tr>";
+             arrayAbs.push(studentName);
              localStorage.setItem("absentStudents", JSON.stringify(arrayAbs));
          }
      });
- }
+ })
 
 
 
@@ -63,6 +65,8 @@
 
 
  function signOut() {
+
+
      firebase.auth().signOut();
      window.location.replace("index.html");
 
