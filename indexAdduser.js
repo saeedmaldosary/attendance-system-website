@@ -51,7 +51,8 @@
          });
          promise.catch(e => alert(e.message));
 
-         uploadUserTypeAndUserRealName();
+         firebase.database().ref("usersInfo").child(document.getElementById("email").value).child("userType").set(userType);
+         firebase.database().ref("usersInfo").child(document.getElementById("email").value).child("userRealName").set(userRealName);
 
 
          alert("User registered!");
@@ -61,25 +62,7 @@
 
 
 
- function uploadUserTypeAndUserRealName() {
 
-     var email = document.getElementById("email").value;
-     var emailUsername = email.substring(0, email.indexOf('@'));
-     var emailSmall = emailUsername.toLowerCase();
-
-     var u = document.getElementById("userType");
-     var userType = u.options[u.selectedIndex].text;
-
-     firebase.database().ref("usersInfo").child(emailSmall).set({
-
-
-         userType: userType,
-         userRealName: document.getElementById("userRealName").value
-
-     });
-
-
- }
 
 
  function signOut() {
