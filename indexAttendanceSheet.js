@@ -23,44 +23,110 @@
  }
 
 
+ attenanceAndAbsentShow();
+ countAttendanceAndAbsent();
 
 
 
- // Attendee Students
- var arrayAtt = [];
- var arrayAbs = [];
+ function attenanceAndAbsentShow() {
+
+     var arrayAtt = [];
+     var arrayAbs = [];
+
+     // Attendee Students
+
+     var f2 = firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(localStorage.getItem("selectedDate")).child("namesList");
+
+     f2.on("value", function (snapshot) {
+         snapshot.forEach(function (childSnapshot) {
+             document.getElementById("tableAttendee").innerHTML += "<tr><td>" + childSnapshot.val() + "</td></tr>";
+             arrayAtt.push(childSnapshot.val());
+             localStorage.setItem("attStudents", JSON.stringify(arrayAtt));
+         });
+     })
+
+     // End of attendee students
+
+     // Absent Students
+     var f12 = firebase.database().ref("coursesInfo").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection"));
+
+     f12.on("value", function (snapshot) {
+         snapshot.forEach(function (childSnapshot) {
+
+             var studentName = childSnapshot.val();
+             if (studentName !== null && !arrayAtt.includes(studentName) && childSnapshot.key !== "courseTeacher") {
+                 document.getElementById("tableAbsent").innerHTML += "<tr><td>" + studentName + "</td></tr>";
+                 arrayAbs.push(studentName);
+                 localStorage.setItem("absentStudents", JSON.stringify(arrayAbs));
+             }
+         });
+     })
+
+ } // End of absent students
 
 
- var f2 = firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(localStorage.getItem("selectedDate")).child("namesList");
 
- f2.on("value", function (snapshot) {
-     snapshot.forEach(function (childSnapshot) {
-         document.getElementById("tableAttendee").innerHTML += "<tr><td>" + childSnapshot.val() + "</td></tr>";
-         arrayAtt.push(childSnapshot.val());
-         localStorage.setItem("attStudents", JSON.stringify(arrayAtt));
-     });
- })
+ function countAttendanceAndAbsent() {
 
- // Absent Students
- var f12 = firebase.database().ref("coursesInfo").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection"));
+     var counterAttend = 0;
+     var counterAbsent = 0;
 
- f12.on("value", function (snapshot) {
-     snapshot.forEach(function (childSnapshot) {
+     var studentsNames = firebase.database().ref("coursesInfo").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection"));
+     var attendancePath = firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection"));
 
-    var studentName = childSnapshot.val();
-         if (studentName !== null && !arrayAtt.includes(studentName) && childSnapshot.key !== "courseTeacher") {
-             document.getElementById("tableAbsent").innerHTML += "<tr><td>" + studentName + "</td></tr>";
-             arrayAbs.push(studentName);
-             localStorage.setItem("absentStudents", JSON.stringify(arrayAbs));
+     studentsNames.on("value", function (snapshot) {
+         snapshot.forEach(function (childSnapshot) {
+
+
+             attendancePath.on("value", function (snapshot2) {
+                 counterAttend = 0;
+                 counterAbsent = 0;
+                 snapshot2.forEach(function (childSnapshot2) {
+                     var countt = firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(childSnapshot2.key).child("namesList");
+
+                     countt.on("value", function (snapshot3) {
+                         snapshot3.forEach(function (childSnapshot3) {
+
+                             if (childSnapshot.val() === childSnapshot3.val()) {
+
+                                 counterAttend++;
+                                 if (localStorage.getItem("userRealname2") === childSnapshot.val() || localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userType2") === 'Teacher') {
+
+                                     document.getElementById("tableAttendanceAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td><td> Attendance " + counterAttend + "</td><td>Absents " + (snapshot2.numChildren() - counterAttend) + "</td></tr>";
+
+                                 }
+
+                             }
+
+
+
+                         }); //End of childsnapshot 3
+                     }) //End of childsnapshot 3
+
+                 }); //End of childsnapshot 2
+             }) //End of childsnapshot 2
+
+
+
+         }); //End of childsnapshot 1
+     }) //End of childsnapshot 1
+ }
+
+ function removeDublicateFromTable() {
+     setTimeout(function () {
+         alert("After 6 seconds!");
+         document.getElementById('tableAttendanceAbsent').style.visibility = 'visible';
+
+         var table = document.getElementById('tableAttendanceAbsent');
+         for (var r = 1, n = table.rows.length; r < n; r++) {
+             if (table.rows[r].cells[0].innerHTML === table.rows[r + 1].cells[0].innerHTML) {
+                 document.getElementById("tableAttendanceAbsent").deleteRow(r);
+
+             }
+
          }
-     });
- })
-
-
-
-
-
-
+     }, 0000);
+ }
 
 
 
