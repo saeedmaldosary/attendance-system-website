@@ -36,46 +36,49 @@
         <div class="passLost">
             <div class="passLost-screen">
                 <!-- <form method="post" action="editAttendanceSheet.html"> -->
-                    <div class="app-title">
-                        <a id="editBut1" style="visibility: hidden" href="editAttendanceSheet.html"><img id="editBut2"
-                                style="visibility: hidden" src="images/editIcon.png"></a>
-                        <!--                         <button id="editBut" style="visibility: hidden">Edit</button>-->
-                        <!--
+                <div class="app-title">
+                    <a id="editBut1" style="visibility: hidden" href="editAttendanceSheet.html"><img id="editBut2"
+                            style="visibility: hidden" src="images/editIcon.png"></a>
+                    <!--                         <button id="editBut" style="visibility: hidden">Edit</button>-->
+                    <!--
                         <h4>Attendance sheet
                         </h4>
 -->
 
-<button onclick="removeDublicateFromTable()">Show statistics</button>
+                    <button class = "btn" onclick="removeDublicateFromTable()">Show statistics</button>
 
-                    </div>
-                    <div class="demo">
+                </div>
+                <div class="demo">
 
-                        <table id="tableAttendee">
-                            <tr>
-                                <th id="atdTitle">Attendee Students</th>
-                            </tr>
-                        </table>
+                    <table id="tableAttendee">
+                        <tr>
+                            <th id="atdTitle">Attendee Students</th>
+                        </tr>
+                    </table>
 
-                        <table id="tableAbsent">
-                            <tr>
-                                <th id="absTitle">Absent Students</th>
-                            </tr>
-                        </table>
+                    <table id="tableAbsent">
+                        <tr>
+                            <th id="absTitle">Absent Students</th>
+                        </tr>
+                    </table>
 
-                        <table id="tableAttendanceAbsent" style="visibility: hidden;">
-                            <tr>
-                                <th id="atnAbssTitle">Attendance and absents Students</th>
-                            </tr>
-                        </table>
-                    </div>
+                    <table id="tableAttendanceAbsent" style="visibility: hidden; display: none;">
+                        <tr>
+                            <caption id="statisticsTitle">Attendance and absents Students</caption>
+                            <th>Names</th><th>Attendance</th><th>Absents</th>
+                        </tr>
+                    </table>
+                </div>
 
-                    <div id="att"></div>
+                <div id="att"></div>
 
 
                 <!-- </form> -->
             </div>
 
         </div>
+
+        
 
 
 

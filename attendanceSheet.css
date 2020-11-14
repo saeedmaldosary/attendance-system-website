@@ -187,10 +187,12 @@ table th {
 }
 
 .demo table {
+    overflow: hidden;
+
     table-layout: fixed;
     width: 100%;
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 3px solid #ddd;
     font-size: 13px;
 }
 
@@ -206,6 +208,7 @@ table th {
     border-top: none;
     border-bottom-width: 2px;
     color: green;
+    overflow: hidden;
 }
 
 .demo table #absTitle {
@@ -219,10 +222,27 @@ table th {
     border: 1px solid #ddd;
     border-top: none;
     border-bottom-width: 2px;
+    overflow: hidden;
     color: rgb(233, 19, 19);
 }
 
-.demo table td {
+.demo table #statisticsTitle {
+    overflow: hidden;
+    height: 20px;
+    padding: 8px 0;
+    text-align: center;
+    background: #ECF0F1;
+    font-size: 16px;
+    text-indent: 8px;
+    font-weight: bolder;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-bottom-width: 2px;
+    color: #0287b8;
+}
+
+.demo table td,.demo table th {
+    
     padding: 8px;
     border: 1px solid #ddd;
     text-overflow: ellipsis;
@@ -231,6 +251,10 @@ table th {
     color: black;
     background: #ffff;
     white-space: nowrap;
+}
+
+.demo #tableAttendanceAbsent th {
+    background: #ecf0f13a;
 }
 
 
@@ -272,9 +296,6 @@ select {
 
 
 #editBut2 {
-    
-    margin-top: 25px;
-    margin-bottom: 0px;
 }
 
 .passLost-form {
@@ -304,25 +325,24 @@ input:focus {
 }
 
 button {
-    padding: 11px;
 
 }
 
 .btn {
     border: 2px solid transparent;
-    background: #3498DB;
+    background: #3faffa;
     color: #ffffff;
     font-size: 16px;
-    line-height: 25px;
-    padding: 10px 0;
     text-decoration: none;
     text-shadow: none;
-    border-radius: 3px;
+    border-radius: 9px;
+    padding: 10px;
     box-shadow: none;
     transition: 0.25s;
-    display: block;
-    width: 250px;
-    margin: 0 auto;
+    width: 150px;
+    margin-bottom: 20px;
+    position: relative;
+    top:-15px
 }
 
 .btn:hover {

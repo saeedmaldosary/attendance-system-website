@@ -92,7 +92,7 @@
                                  counterAttend++;
                                  if (localStorage.getItem("userRealname2") === childSnapshot.val() || localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userType2") === 'Teacher') {
 
-                                     document.getElementById("tableAttendanceAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td><td> Attendance " + counterAttend + "</td><td>Absents " + (snapshot2.numChildren() - counterAttend) + "</td></tr>";
+                                     document.getElementById("tableAttendanceAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td><td style='text-align:center'>" + counterAttend + "</td><td style='text-align:center'>" + (snapshot2.numChildren() - counterAttend) + "</td></tr>";
 
                                  }
 
@@ -114,8 +114,8 @@
 
  function removeDublicateFromTable() {
      setTimeout(function () {
-         alert("After 6 seconds!");
          document.getElementById('tableAttendanceAbsent').style.visibility = 'visible';
+         document.getElementById('tableAttendanceAbsent').style.display = 'table';
 
          var table = document.getElementById('tableAttendanceAbsent');
          for (var r = 1, n = table.rows.length; r < n; r++) {
