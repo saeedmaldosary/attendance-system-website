@@ -24,6 +24,9 @@
 
  });
 
+
+
+
  function signUp() {
 
      var u = document.getElementById("userType");

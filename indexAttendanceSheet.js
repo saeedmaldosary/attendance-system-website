@@ -84,7 +84,6 @@ function countAttendanceAndAbsent() {
 
             attendancePath.on("value", function (snapshot2) {
                 counterAttend = 0;
-                counterAbsent = 0;
                 snapshot2.forEach(function (childSnapshot2) {
                     var countt = firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(childSnapshot2.key).child("namesList");
 
@@ -98,7 +97,13 @@ function countAttendanceAndAbsent() {
 
                             if (childSnapshot.key !== "courseTeacher") {
                                 if (localStorage.getItem("userRealname2") === childSnapshot.val() || localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userType2") === 'Teacher') {
-                                    document.getElementById("tableAttendanceAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td><td style='text-align:center'>" + counterAttend + "</td><td style='text-align:center'>" + (snapshot2.numChildren() - counterAttend) + "</td></tr>";
+                                    var absentsCounter = (snapshot2.numChildren() - counterAttend);
+                                    if(absentsCounter > 8) {
+                                        document.getElementById("tableAttendanceAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td><td style='text-align:center'>" + counterAttend + "</td><td style='text-align:center; color:red; font-weight:bolder;'>" + absentsCounter + "</td></tr>";
+                                    } else {
+                                        document.getElementById("tableAttendanceAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td><td style='text-align:center'>" + counterAttend + "</td><td style='text-align:center'>" + absentsCounter + "</td></tr>";
+
+                                    }
                                     removeDublicateFromTable();
                                 }
                             }
