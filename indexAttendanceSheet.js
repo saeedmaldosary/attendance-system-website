@@ -126,7 +126,7 @@ function removeDublicateFromTable() {
     for (var r = 1, n = table.rows.length; r < n; r++) {
         if (table.rows[r].cells[0].innerHTML === table.rows[r + 1].cells[0].innerHTML) {
             document.getElementById("tableAttendanceAbsent").deleteRow(r);
-
+            r++;
         }
 
     }
