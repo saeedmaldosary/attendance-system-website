@@ -6,7 +6,7 @@
     <title>Attendance System</title>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600" rel="stylesheet" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Abel|Satisfy' rel='stylesheet' type='text/css' />
-    <link href="attendanceSheet.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="absentsDates.css" rel="stylesheet" type="text/css" media="screen" />
     <link rel="icon" href="images/gplogo.png" type="image/png" sizes="5x10">
     <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 
@@ -35,50 +35,20 @@
         <!-- passLost -->
         <div class="passLost">
             <div class="passLost-screen">
-                <!-- <form method="post" action="editAttendanceSheet.html"> -->
-                <div class="app-title">
-                    <a id="editBut1" style="visibility: hidden" href="editAttendanceSheet.html"><img id="editBut2"
-                            style="visibility: hidden" src="images/editIcon.png"></a>
-                    <!--                         <button id="editBut" style="visibility: hidden">Edit</button>-->
-                    <!--
-                        <h4>Attendance sheet
-                        </h4>
--->
+                <div class="demo" id="demo">
 
-                    <button class = "btn" onclick="displayAttendanceAbsentCounter()">Show statistics</button>
+
+                     <a class="btn" href="attendanceSheet.html">Back to results</a>
+             
+
 
                 </div>
-                <div class="demo">
 
-                    <table id="tableAttendee">
-                        <tr>
-                            <th id="atdTitle">Attendee Students</th>
-                        </tr>
-                    </table>
-
-                    <table id="tableAbsent">
-                        <tr>
-                            <th id="absTitle">Absent Students</th>
-                        </tr>
-                    </table>
-
-                    <table id="tableAttendanceAbsent" style="visibility: hidden; display: none;">
-                        <tr>
-                            <caption id="statisticsTitle"><a href="absentsDates.html">Attendance and absents Students</a></caption>
-                            <th>Names</th><th>Attendance</th><th>Absents</th><th>Email</th>
-                        </tr>
-                    </table>
-                </div>
-
-                <div id="att"></div>
-
-
-                <!-- </form> -->
             </div>
 
         </div>
 
-        
+
 
 
 
@@ -98,7 +68,7 @@
         };
         firebase.initializeApp(config);
     </script>
-    <script src="indexAttendanceSheet.js"></script>
+    <script src="indexAbsentsDates.js"></script>
 </body>
 
 </html>

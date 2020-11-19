@@ -98,14 +98,21 @@ function countAttendanceAndAbsent() {
                             if (childSnapshot.key !== "courseTeacher") {
                                 if (localStorage.getItem("userRealname2") === childSnapshot.val() || localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userType2") === 'Teacher') {
                                     var absentsCounter = (snapshot2.numChildren() - counterAttend);
-                                    if(absentsCounter > 8) {
-                                        document.getElementById("tableAttendanceAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td><td style='text-align:center'>" + counterAttend + "</td><td style='text-align:center; color:red; font-weight:bolder;'>" + absentsCounter + "</td></tr>";
+
+
+                                    if (absentsCounter > 8) {
+                                        document.getElementById("tableAttendanceAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td><td style='text-align:center'>" + counterAttend + "</td><td style='text-align:center; background:red; color:white; font-weight:bolder;'>" + absentsCounter + "</tr>";
+                                    } else if (absentsCounter > 6 && absentsCounter <= 8) {
+                                        document.getElementById("tableAttendanceAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td><td style='text-align:center'>" + counterAttend + "</td><td style='text-align:center; background:orange; color:white; font-weight:bolder;'>" + absentsCounter + "</tr>";
                                     } else {
                                         document.getElementById("tableAttendanceAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td><td style='text-align:center'>" + counterAttend + "</td><td style='text-align:center'>" + absentsCounter + "</td></tr>";
 
                                     }
+
+
                                     removeDublicateFromTable();
                                 }
+
                             }
 
 
@@ -132,7 +139,81 @@ function removeDublicateFromTable() {
     }
 }
 
+function addStudentsEmail() {
+    var table = document.getElementById('tableAttendanceAbsent');
+
+    var useresInfo = firebase.database().ref("usersInfo");
+
+    useresInfo.on("value", function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+
+            var email = firebase.database().ref("usersInfo").child(childSnapshot.key);
+
+
+            email.on("value", function (snapshot2) {
+                snapshot2.forEach(function (childSnapshot2) {
+
+                    for (var r = 1, n = table.rows.length; r < n; r++) {
+
+                        if (table.rows[r].cells[0].innerHTML === childSnapshot2.val()) {
+                            var tbl = document.getElementById('tableAttendanceAbsent'), // table reference
+                                r;
+                            // open loop for each row and append cell
+                            createCell(tbl.rows[r].insertCell(tbl.rows[r].cells.length), childSnapshot.key + "@sm.imamu.edu.sa");
+
+
+                        }
+
+                    }
+
+
+                }); //End email
+            }) //End email
+
+
+        }); //End usersInfo
+    }) //End usersInfo
+
+}
+
+function addAbsentsDates() {
+    var table = document.getElementById('tableAttendanceAbsent');
+    for (var r = 1, n = table.rows.length; r < n; r++) {
+        var datePath = firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection"));
+        datePath.on("value", function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+
+                var attendancePath = firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(childSnapshot.key).child("namesList");
+
+                attendancePath.on("value", function (snapshot2) {
+                    snapshot2.forEach(function (childSnapshot2) {
+
+                        if (table.rows[r].cells[0].innerHTML != childSnapshot2.val()) {
+                            // alert("true");
+                            // createCell(tbl.rows[r].insertCell(tbl.rows[r].cells.length), childSnapshot.key + "date");
+                        }
+
+                    }); //End attendancePath
+                }) //End attendancePath
+
+            }); //End datePath
+        }) //End datePath
+
+    } // End loop in table
+}
+
+
+function createCell(cell, text) {
+    var div = document.createElement('div'), // create DIV element
+        txt = document.createTextNode(text); // create text node
+    div.appendChild(txt); // append text node to the DIV
+    cell.appendChild(div); // append DIV to the table cell
+}
+
+
 function displayAttendanceAbsentCounter() {
+    addStudentsEmail();
+    // addAbsentsDates();
     document.getElementById('tableAttendanceAbsent').style.visibility = 'visible';
     document.getElementById('tableAttendanceAbsent').style.display = 'table';
 }
@@ -140,9 +221,6 @@ function displayAttendanceAbsentCounter() {
 
 
 function signOut() {
-
-
     firebase.auth().signOut();
     window.location.replace("index.html");
-
 }
