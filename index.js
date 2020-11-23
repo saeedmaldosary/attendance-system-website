@@ -26,10 +26,7 @@
              }
          });
 
-         var f2 = firebase.database().ref("usersInfo").child(username).child("userRealName");
-         f2.on('value', function (datasnapshot2) {
-            localStorage.setItem("userRealname2", datasnapshot2.val());
-        });
+     
 
      } else {
          //User not signed in redirect to login page!
@@ -45,6 +42,9 @@
 
 
  function signIn() {
+
+
+   
 
      var email = document.getElementById("email").value.toLowerCase();
      var password = document.getElementById("password").value;

@@ -10,6 +10,12 @@ firebase.auth().onAuthStateChanged(function (user) {
             localStorage.setItem("userType2", datasnapshot.val());
 
 
+            var f2 = firebase.database().ref("usersInfo").child(username).child("userRealName");
+            f2.on('value', function (datasnapshot2) {
+                localStorage.setItem("userRealname2", datasnapshot2.val());
+            });
+
+
             if (datasnapshot.val() === 'Admin') {
                 if (window.location.href.indexOf('homepagestudentteacher') > 1)
                     window.location.replace("homepage.html");

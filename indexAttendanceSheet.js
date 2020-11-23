@@ -3,6 +3,8 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         // User is signed in.
 
+
+
     } else {
         //User not signed in redirect to login page!
         uid = null;
@@ -23,15 +25,28 @@ if (localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userT
 }
 
 
-attenanceAndAbsentShow();
 countAttendanceAndAbsent();
 
+firebase.auth().onAuthStateChanged(function (user) {
+    email = user.email;
+    var username = email.substring(0, email.indexOf('@')).toLowerCase();
 
+    var f22 = firebase.database().ref("usersInfo").child(username).child("userRealName");
+    f22.once("value")
+        .then(function (snapshot) {
+            if (localStorage.getItem("userType2") === "Student") {
+                attenanceAndAbsentShow(snapshot.val());
+            } else {
+                attenanceAndAbsentShowtttt();
+            }
 
-function attenanceAndAbsentShow() {
+        }); // For retreive user Real name
+}); // For firebase.auth
+
+function attenanceAndAbsentShowtttt() {
 
     var arrayAtt = [];
-    var arrayAbs = [];
+    var arrayAtt2 = [];
 
     // Attendee Students
 
@@ -39,7 +54,7 @@ function attenanceAndAbsentShow() {
 
     f2.on("value", function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
-            if (localStorage.getItem("userRealname2") === childSnapshot.val() || localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userType2") === 'Teacher') {
+            if (localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userType2") === 'Teacher') {
                 document.getElementById("tableAttendee").innerHTML += "<tr><td>" + childSnapshot.val() + "</td></tr>";
                 arrayAtt.push(childSnapshot.val());
                 localStorage.setItem("attStudents", JSON.stringify(arrayAtt));
@@ -47,26 +62,57 @@ function attenanceAndAbsentShow() {
         });
     })
 
-    // End of attendee students
 
     // Absent Students
-    var f12 = firebase.database().ref("coursesInfo").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection"));
+    setTimeout(function () {
 
-    f12.on("value", function (snapshot) {
+        var table = document.getElementById('tableAttendee');
+        for (var r = 1, n = table.rows.length; r < n; r++) {
+                arrayAtt2.push(table.rows[r].cells[0].innerHTML);
+    
+        }
+        
+        var f12 = firebase.database().ref("coursesInfo").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection"));
+
+        f12.on("value", function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+
+                if(!arrayAtt2.includes(childSnapshot.val()) && childSnapshot.key !== "courseTeacher")
+                document.getElementById("tableAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td></tr>";
+            });
+        })
+
+
+
+    }, 3000);
+  
+
+
+}
+
+
+function attenanceAndAbsentShow(userRealName) {
+
+    var f2 = firebase.database().ref("studentsAttendee").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection")).child(localStorage.getItem("selectedDate")).child("namesList");
+
+    f2.on("value", function (snapshot) {
         snapshot.forEach(function (childSnapshot) {
-
-            var studentName = childSnapshot.val();
-            if (studentName !== null && !arrayAtt.includes(studentName) && childSnapshot.key !== "courseTeacher") {
-                if (localStorage.getItem("userRealname2") === childSnapshot.val() || localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userType2") === 'Teacher') {
-                    document.getElementById("tableAbsent").innerHTML += "<tr><td>" + studentName + "</td></tr>";
-                    arrayAbs.push(studentName);
-                    localStorage.setItem("absentStudents", JSON.stringify(arrayAbs));
-                }
+            if (childSnapshot.val() === userRealName) {
+                document.getElementById("tableAttendee").innerHTML += "<tr><td>" + childSnapshot.val() + "</td></tr>";
             }
         });
     })
+    setTimeout(function () {
 
-} // End of absent students
+        if (document.getElementById("tableAttendee").rows.length === 1) {
+            document.getElementById("tableAbsent").innerHTML += "<tr><td>" + userRealName + "</td></tr>";
+        }
+    }, 3000);
+
+}
+
+
+
 
 
 
