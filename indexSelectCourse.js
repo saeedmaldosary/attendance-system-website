@@ -40,6 +40,7 @@
 
 
                  var CoursesO = ["IS395", "IS203", "IS441", "IS391"];
+                 var coursesNot = [];
                  for (var i = 0; i < CoursesO.length; i++) {
 
                      var f25 = firebase.database().ref("coursesInfo").child(CoursesO[i]);
@@ -52,8 +53,9 @@
 
                              if (userType === "Teacher") {
                                  if (snapshot.child(childSnapshot.key).hasChild("courseTeacher")) {
-                                     if (snapshot.child(childSnapshot.key).child("courseTeacher").val() === userRealName) {
+                                     if (snapshot.child(childSnapshot.key).child("courseTeacher").val() === userRealName && !coursesNot.includes(snapshot.key)) {
                                          document.getElementById("courses").innerHTML += "<option>" + snapshot.key + "</option>";
+                                         coursesNot.push(snapshot.key);
                                      } // For check courseTeacher is same
                                  } // For Check courseTeacher
 

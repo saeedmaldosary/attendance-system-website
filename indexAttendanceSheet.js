@@ -22,10 +22,10 @@ if (localStorage.getItem("userType2") === 'Student' || localStorage.getItem("use
 if (localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userType2") === 'Teacher') {
     document.getElementById('editBut1').style.visibility = 'visible';
     document.getElementById('editBut2').style.visibility = 'visible';
+    document.getElementById('allAtn').style.visibility = 'visible';
 }
 
 
-countAttendanceAndAbsent();
 
 firebase.auth().onAuthStateChanged(function (user) {
     email = user.email;
@@ -34,10 +34,14 @@ firebase.auth().onAuthStateChanged(function (user) {
     var f22 = firebase.database().ref("usersInfo").child(username).child("userRealName");
     f22.once("value")
         .then(function (snapshot) {
+            // countAttendanceAndAbsent(snapshot.val());
+
             if (localStorage.getItem("userType2") === "Student") {
+                document.getElementById("absentsDates").removeAttribute("href");
                 attenanceAndAbsentShow(snapshot.val());
             } else {
                 attenanceAndAbsentShowtttt();
+
             }
 
         }); // For retreive user Real name
@@ -47,6 +51,7 @@ function attenanceAndAbsentShowtttt() {
 
     var arrayAtt = [];
     var arrayAtt2 = [];
+    var arrayAbs = [];
 
     // Attendee Students
 
@@ -68,24 +73,27 @@ function attenanceAndAbsentShowtttt() {
 
         var table = document.getElementById('tableAttendee');
         for (var r = 1, n = table.rows.length; r < n; r++) {
-                arrayAtt2.push(table.rows[r].cells[0].innerHTML);
-    
+            arrayAtt2.push(table.rows[r].cells[0].innerHTML);
+
         }
-        
+
         var f12 = firebase.database().ref("coursesInfo").child(localStorage.getItem("selectedCourse")).child(localStorage.getItem("selectedSection"));
 
         f12.on("value", function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
 
-                if(!arrayAtt2.includes(childSnapshot.val()) && childSnapshot.key !== "courseTeacher")
-                document.getElementById("tableAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td></tr>";
+                if (!arrayAtt2.includes(childSnapshot.val()) && childSnapshot.key !== "courseTeacher"){
+                    document.getElementById("tableAbsent").innerHTML += "<tr><td>" + childSnapshot.val() + "</td></tr>";
+                    arrayAbs.push(childSnapshot.val());
+                    localStorage.setItem("absentStudents", JSON.stringify(arrayAbs));
+                }
             });
         })
 
 
 
     }, 3000);
-  
+
 
 
 }
@@ -116,7 +124,7 @@ function attenanceAndAbsentShow(userRealName) {
 
 
 
-function countAttendanceAndAbsent() {
+function countAttendanceAndAbsent(userRealName) {
 
     var counterAttend = 0;
     var counterAbsent = 0;
@@ -137,12 +145,12 @@ function countAttendanceAndAbsent() {
                         snapshot3.forEach(function (childSnapshot3) {
 
                             if (childSnapshot.val() === childSnapshot3.val()) {
-
+                                // alert(childSnapshot.val());
                                 counterAttend++;
                             }
 
                             if (childSnapshot.key !== "courseTeacher") {
-                                if (localStorage.getItem("userRealname2") === childSnapshot.val() || localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userType2") === 'Teacher') {
+                                if (userRealName === childSnapshot.val() || localStorage.getItem("userType2") === 'Admin' || localStorage.getItem("userType2") === 'Teacher') {
                                     var absentsCounter = (snapshot2.numChildren() - counterAttend);
 
 
@@ -156,7 +164,7 @@ function countAttendanceAndAbsent() {
                                     }
 
 
-                                    removeDublicateFromTable();
+                                    // removeDublicateFromTable();
                                 }
 
                             }
@@ -174,9 +182,12 @@ function countAttendanceAndAbsent() {
     }) //End of childsnapshot 1
 }
 
+
+
+
 function removeDublicateFromTable() {
     var table = document.getElementById('tableAttendanceAbsent');
-    for (var r = 1, n = table.rows.length; r < n; r++) {
+    for (var r =1, n = table.rows.length; r < n; r++) {
         if (table.rows[r].cells[0].innerHTML === table.rows[r + 1].cells[0].innerHTML) {
             document.getElementById("tableAttendanceAbsent").deleteRow(r);
             r++;
@@ -258,6 +269,7 @@ function createCell(cell, text) {
 
 
 function displayAttendanceAbsentCounter() {
+
     addStudentsEmail();
     // addAbsentsDates();
     document.getElementById('tableAttendanceAbsent').style.visibility = 'visible';
